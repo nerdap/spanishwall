@@ -41,7 +41,7 @@ class DictEntry(object):
     def __str__(self):
         conjs_str = {
             id: str(conj)
-            for id, conj in self.conjugations.items()
+            for id, conj in self.conjugations
         }
         return f'''
             Word: {self.word}
@@ -51,7 +51,7 @@ class DictEntry(object):
 
 
 def _parse_conjugation(conj_raw):
-    # API documentations: https://dictionaryapi.com/products/json#sec-7.cjts
+    # API documentation: https://dictionaryapi.com/products/json#sec-7.cjts
     print(conj_raw)
     forms = conj_raw['cjfs']
     conj = Conjugation(
@@ -66,20 +66,25 @@ def _parse_conjugation(conj_raw):
 
 def _parse_conjugations(conjs_raw):
     CONJ_ID_NAME_MAP = {
-        'pint': 'presente',
+        'pind': 'presente',
         'futr': 'futuro',
-        'pret': 'preterito imperfecto',
-        'ppci': 'preterito perfecto',
+        'pret': 'pret. imperfecto',
+        'ppci': 'pret. perfecto',
     }
-    return {
-        CONJ_ID_NAME_MAP[conj_raw['cjid']]: _parse_conjugation(conj_raw)
-        for conj_raw in conjs_raw
-        if conj_raw['cjid'] in CONJ_ID_NAME_MAP
-    }
+    CONJ_ID_ORDERING = ['pind', 'futr', 'pret', 'ppci']
 
+    conjs_raw_map = {
+        conj_raw['cjid']: conj_raw
+        for conj_raw in conjs_raw
+    }
+    return [
+        (CONJ_ID_NAME_MAP[conj_id], _parse_conjugation(conjs_raw_map[conj_id]))
+        for conj_id in CONJ_ID_ORDERING
+    ]
 
 def get_entry(word):
     query_url = URL.format(word=word, key=API_KEY)
+    print(f'Querying: {query_url}')
     r = requests.get(query_url)
     if r.status_code != 200:
         raise Exception('Error fetching definition for {}'.format(word))

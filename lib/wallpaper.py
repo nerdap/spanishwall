@@ -5,33 +5,64 @@ from PIL import Image, ImageDraw, ImageFont
 WALL_WIDTH = 2736
 WALL_HEIGHT = 1834
 WALLS_DIR =  os.path.realpath('walls/')
-FONT_PATH = 'C:\\Windows\\Fonts\\Arial.ttf'
+FONT_PATH_NORMAL = 'C:\\Windows\\Fonts\\arial.ttf'
+FONT_PATH_BOLD = 'C:\\Windows\\Fonts\\arialbd.ttf'
 
 def _get_filepath(dictionary_entry):
     rand = random.randint(0, 1000000000)
     return f'{WALLS_DIR}/{dictionary_entry.word}_{rand}.jpg'
 
-def _make_conjugations_table(conjugations):
-    table = []
-    for conjugation in conjugations:
-        row = []
-        for verb in conjugation:
-            row.append(verb)
-        table.append(row)
-    return table
+def _draw_column(draw, font_normal, font_bold, x, y, col):
+    for i, val in enumerate(col):
+        if i == 0:
+            font = font_bold
+        else:
+            font = font_normal
+        draw.text((x, y + i*100), val, font=font, fill='black')
+
+def _draw_conjugations(draw, font_normal, font_bold, start_x, start_y, conjs):
+    _draw_column(
+        draw=draw,
+        font_normal=font_bold,
+        font_bold=font_bold,
+        x=start_x,
+        y=start_y,
+        col=['Form', 'Yo', 'Tú', 'El', 'Nosotros', 'Ellos'],
+    )
+    offset = 0
+    for conj_name, conj in conjs:
+        _draw_column(
+            draw=draw,
+            font_normal=font_normal,
+            font_bold=font_bold,
+            x=start_x + 300 + offset*500,
+            y=start_y,
+            col=[
+                conj_name,
+                conj.yo,
+                conj.tu,
+                conj.el,
+                conj.nosotros,
+                conj.ellos,
+            ],
+        )
+        offset += 1
 
 def _draw_text(img, dictionary_entry):
     d = ImageDraw.Draw(img)
-    font_big = ImageFont.truetype(FONT_PATH, size =150)
-    font_mid = ImageFont.truetype(FONT_PATH, size=100)
-    font_small = ImageFont.truetype(FONT_PATH, size=50)
+    font_big = ImageFont.truetype(FONT_PATH_NORMAL, size=150)
+    font_mid = ImageFont.truetype(FONT_PATH_NORMAL, size=100)
+    font_small = ImageFont.truetype(FONT_PATH_NORMAL, size=50)
+    font_small_bold = ImageFont.truetype(FONT_PATH_BOLD, size=50)
     d.text((250,250), dictionary_entry.word, font=font_big, fill='black')
     d.text((250,500), dictionary_entry.definition, font=font_mid, fill='black')
-    d.text(
-        (250,800),
-        str(dictionary_entry.conjugations),
-        font=font_small,
-        fill='black',
+    _draw_conjugations(
+        draw=d,
+        font_normal=font_small,
+        font_bold=font_small_bold,
+        start_x=250, 
+        start_y=750,
+        conjs=dictionary_entry.conjugations,
     )
 
 def create_text_wallpaper(dictionary_entry):
