@@ -5,6 +5,7 @@ RUN_LIMIT = 1 # 100
 def main():
     for i in range(RUN_LIMIT):
         print(f'Starting iteration {i}..')
+
         # get a word from pending words list
         word = wordlist.get_pending_word()
         print(f'Got word: {word}')
