@@ -32,10 +32,12 @@ class DictEntry(object):
         self,
         word,
         definition,
+        example,
         conjugations,
         ):
         self.word = word
         self.definition = definition
+        self.example = example
         self.conjugations = conjugations
 
     def __str__(self):
@@ -46,13 +48,13 @@ class DictEntry(object):
         return f'''
             Word: {self.word}
             Definition: {self.definition}
+            Example: {self.example}
             Conjugations: {conjs_str}
         '''
 
 
 def _parse_conjugation(conj_raw):
     # API documentation: https://dictionaryapi.com/products/json#sec-7.cjts
-    print(conj_raw)
     forms = conj_raw['cjfs']
     conj = Conjugation(
         yo=forms[0],
@@ -96,8 +98,12 @@ def get_entry(word):
     conjugations = {}
     if 'suppl' in entry and 'cjts' in entry['suppl']:
         conjugations = _parse_conjugations(entry['suppl']['cjts'])
+
+    example_raw = entry['def'][0]['sseq'][0][0][1]['dt'][1][1][0]
+    example = (example_raw['t'], example_raw['tr'])
     return DictEntry(
         word=word,
         definition=defn,
+        example=example,
         conjugations=conjugations,
     )

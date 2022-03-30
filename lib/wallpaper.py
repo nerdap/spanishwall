@@ -56,6 +56,9 @@ def _draw_text(img, dictionary_entry):
     font_small_bold = ImageFont.truetype(FONT_PATH_BOLD, size=50)
     d.text((250,250), dictionary_entry.word, font=font_big, fill='black')
     d.text((250,500), dictionary_entry.definition, font=font_mid, fill='black')
+    d.text((1500, 350), 'Example: ', font=font_small_bold, fill='black')
+    d.text((1500, 450), dictionary_entry.example[0], font=font_small, fill='black')
+    d.text((1500, 550), dictionary_entry.example[1], font=font_small, fill='black')
     _draw_conjugations(
         draw=d,
         font_normal=font_small,
