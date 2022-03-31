@@ -12,7 +12,6 @@ def _read_wordlist(filename):
         ])
 
 def get_pending_word():
-    return 'tener'
     all_words = _read_wordlist(WORDS_FILE)
     processed_words = _read_wordlist(PROCESSED_FILE)
     unused_words = [

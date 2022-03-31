@@ -99,8 +99,24 @@ def get_entry(word):
     if 'suppl' in entry and 'cjts' in entry['suppl']:
         conjugations = _parse_conjugations(entry['suppl']['cjts'])
 
-    example_raw = entry['def'][0]['sseq'][0][0][1]['dt'][1][1][0]
-    example = (example_raw['t'], example_raw['tr'])
+    def_raw = entry['def'][0]
+    print(f'Parsing definition: {def_raw}')
+    sense_seqs = def_raw['sseq'][0]
+    print(f'Parsing sseq: {sense_seqs}')
+    first_sense = sense_seqs[0][1]
+    print(f'Parsing first sense: {first_sense}')
+    defining_text = first_sense['dt']
+    print(f'Parsing defining text: {defining_text}')
+    visual_illustrations = [
+        element[1]
+        for element in defining_text
+        if element[0] == 'vis'
+    ]
+    print(f'Parsing visual illustrations: {visual_illustrations}')
+    example = None
+    if len(visual_illustrations) > 0:
+        example_raw = visual_illustrations[0][0]
+        example = (example_raw['t'], example_raw['tr'])
     return DictEntry(
         word=word,
         definition=defn,

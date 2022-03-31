@@ -21,6 +21,9 @@ def _draw_column(draw, font_normal, font_bold, x, y, col):
         draw.text((x, y + i*100), val, font=font, fill='black')
 
 def _draw_conjugations(draw, font_normal, font_bold, start_x, start_y, conjs):
+    if len(conjs) == 0:
+        return
+
     _draw_column(
         draw=draw,
         font_normal=font_bold,
@@ -57,8 +60,19 @@ def _draw_text(img, dictionary_entry):
     d.text((250,250), dictionary_entry.word, font=font_big, fill='black')
     d.text((250,500), dictionary_entry.definition, font=font_mid, fill='black')
     d.text((1500, 350), 'Example: ', font=font_small_bold, fill='black')
-    d.text((1500, 450), dictionary_entry.example[0], font=font_small, fill='black')
-    d.text((1500, 550), dictionary_entry.example[1], font=font_small, fill='black')
+    if dictionary_entry.example is not None:
+        d.text(
+            (1500, 450),
+            dictionary_entry.example[0],
+            font=font_small,
+            fill='black',
+        )
+        d.text(
+            (1500, 550),
+            dictionary_entry.example[1],
+            font=font_small,
+            fill='black',
+        )
     _draw_conjugations(
         draw=d,
         font_normal=font_small,
