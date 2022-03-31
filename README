@@ -1,0 +1,22 @@
+### Introduction
+
+SpanishWall is a little tool for English-speaking Spanish learners. The idea is
+to show dictionary definitions of Spanish words as wallpaper, helping you
+build your Spanish vocabulary.
+
+### How To Use
+
+SpanishWall works by taking a list of Spanish words (from words.txt), and uses
+Mirriam-Webster's Dictionary API to fetch the definition of the word. 
+
+The definition is then rendered onto an image which can be used as the system
+wallpaper.
+
+To use SpanishWall, create an API key at https://dictionaryapi.com/ and set it
+up at config.py. Also update the other variables in config.py to your
+preference.
+
+Then run main.py to generate the wallpapers.
+
+Finally you can point your OS to the walls directory so it uses the images from
+there as the wallpaper. SpanishWall doesn't do this for you.

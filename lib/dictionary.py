@@ -1,10 +1,5 @@
 import requests
-
-API_KEY = '198d1aad-a4c8-418b-b224-2b58db12e0eb'
-URL = (
-    'https://www.dictionaryapi.com/'
-    'api/v3/references/spanish/json/{word}?key={key}'
-)
+from . import config
 
 class Conjugation(object):
     def __init__(self, yo, tu, el, nosotros, ellos):
@@ -85,7 +80,7 @@ def _parse_conjugations(conjs_raw):
     ]
 
 def get_entry(word):
-    query_url = URL.format(word=word, key=API_KEY)
+    query_url = config.URL.format(word=word, key=config.API_KEY)
     print(f'Querying: {query_url}')
     r = requests.get(query_url)
     if r.status_code != 200:

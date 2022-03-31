@@ -1,16 +1,11 @@
 import os
 import random
 from PIL import Image, ImageDraw, ImageFont
-
-WALL_WIDTH = 2736
-WALL_HEIGHT = 1834
-WALLS_DIR =  os.path.realpath('walls/')
-FONT_PATH_NORMAL = 'C:\\Windows\\Fonts\\arial.ttf'
-FONT_PATH_BOLD = 'C:\\Windows\\Fonts\\arialbd.ttf'
+from . import config
 
 def _get_filepath(dictionary_entry):
     rand = random.randint(0, 1000000000)
-    return f'{WALLS_DIR}/{dictionary_entry.word}_{rand}.jpg'
+    return f'{config.WALLS_DIR}/{dictionary_entry.word}_{rand}.jpg'
 
 def _draw_column(draw, font_normal, font_bold, x, y, col):
     for i, val in enumerate(col):
@@ -53,10 +48,10 @@ def _draw_conjugations(draw, font_normal, font_bold, start_x, start_y, conjs):
 
 def _draw_text(img, dictionary_entry):
     d = ImageDraw.Draw(img)
-    font_big = ImageFont.truetype(FONT_PATH_NORMAL, size=150)
-    font_mid = ImageFont.truetype(FONT_PATH_NORMAL, size=100)
-    font_small = ImageFont.truetype(FONT_PATH_NORMAL, size=50)
-    font_small_bold = ImageFont.truetype(FONT_PATH_BOLD, size=50)
+    font_big = ImageFont.truetype(config.FONT_PATH_NORMAL, size=150)
+    font_mid = ImageFont.truetype(config.FONT_PATH_NORMAL, size=100)
+    font_small = ImageFont.truetype(config.FONT_PATH_NORMAL, size=50)
+    font_small_bold = ImageFont.truetype(config.FONT_PATH_BOLD, size=50)
     d.text((250,250), dictionary_entry.word, font=font_big, fill='black')
     d.text((250,500), dictionary_entry.definition, font=font_mid, fill='black')
     d.text((1500, 350), 'Example: ', font=font_small_bold, fill='black')
@@ -83,6 +78,10 @@ def _draw_text(img, dictionary_entry):
     )
 
 def create_text_wallpaper(dictionary_entry):
-    img = Image.new('RGB', (WALL_WIDTH, WALL_HEIGHT), color='white')
+    img = Image.new(
+        'RGB',
+        (config.WALL_WIDTH, config.WALL_HEIGHT),
+        color='white',
+    )
     _draw_text(img, dictionary_entry)
     img.save(_get_filepath(dictionary_entry))
