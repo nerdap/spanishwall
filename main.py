@@ -1,6 +1,6 @@
 from lib import dictionary, wallpaper, wordlist
 
-RUN_LIMIT = 1 # 100
+RUN_LIMIT = 900
 
 def main():
     for i in range(RUN_LIMIT):

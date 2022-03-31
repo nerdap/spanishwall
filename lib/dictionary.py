@@ -90,8 +90,10 @@ def get_entry(word):
     r = requests.get(query_url)
     if r.status_code != 200:
         raise Exception('Error fetching definition for {}'.format(word))
+    if len(r.json()) == 0:
+        return None
     entry = r.json()[0]
-    if len(entry['shortdef']) == 0:
+    if 'shortdef' not in entry or len(entry['shortdef']) == 0:
         return None
     defn = entry['shortdef'][0]
 

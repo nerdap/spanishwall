@@ -1,5 +1,6 @@
 
 import os
+# Source: https://raw.githubusercontent.com/lorenbrichter/Words/master/Words/es.txt
 WORDS_FILE = os.path.realpath('assets/words.txt')
 PROCESSED_FILE = os.path.realpath('assets/processed.txt')
 
